@@ -9,8 +9,8 @@ FROM elasticsearch:${elasticsearch_version}
 ARG ik_plugin_url=elasticsearch-analysis-ik-7.4.2.zip
 ARG pingyin_plugin_url=elasticsearch-analysis-pinyin-7.4.2.zip
 COPY plugins /usr/share/plugins
-RUN /usr/share/elasticsearch/bin/elasticsearch-plugin install -b /usr/share/plugins/${ik_plugin_url}
-RUN /usr/share/elasticsearch/bin/elasticsearch-plugin install /usr/share/plugins/${pingyin_plugin_url}
+RUN /usr/share/elasticsearch/bin/elasticsearch-plugin install -b file:///usr/share/plugins/${ik_plugin_url}
+RUN /usr/share/elasticsearch/bin/elasticsearch-plugin install file:///usr/share/plugins/${pingyin_plugin_url}
 
 ARG ik_custom_dict=http://test.dict.com/custom.dic
 ARG ik_custom_stopword_dict=http://test.dict.com/custom_stopwords.dic
