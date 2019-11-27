@@ -1,0 +1,12 @@
+cluster.name: els_cluster
+node.name: es-node1
+network.host: 0.0.0.0
+#network.publish_host: 192.168.111.237
+http.port: 9200
+#transport.tcp.port: 9300
+http.cors.enabled: true
+http.cors.allow-origin: "*"
+#discovery.seed_hosts: ["host1", "host2"]
+cluster.initial_master_nodes: ["192.169.111.237"]
+#discovery.zen.ping.unicast.hosts: ["192.168.111.237:9300","192.168.111.237:9301","192.168.111.237:9302"]
+#discovery.zen.minimum_master_nodes: 2

@@ -1,0 +1,119 @@
+version: '3.2'
+networks:
+  default:
+    external:
+      name: ${EXTERNAL_NETWORKS_NAME}
+
+services:
+  kibana:
+    image: kibana:$KIBANA_VERSION
+    container_name: kibana
+    restart: always
+    environment:
+      - I18N_LOCALE=zh-CN
+      - XPACK_GRAPH_ENABLED=true
+      - TIMELION_ENABLED=true
+      - XPACK_MONITORING_COLLECTION_ENABLED="true"      
+    ports:
+      - "10700:5601"
+    networks:
+      - default
+    depends_on:
+      - elasticsearch
+      - es02
+      - es03
+  elasticsearch:
+    build:
+      context: ./elasticsearch/Dockerfile
+      args:
+        - elasticsearch_version=$ELASTICSEARCH_VERSION
+        - ik_plugin_url=$ELASTICSEARCH_IK_URL
+        - pingyin_plugin_url=$ELASTICSEARCH_PINGYIN_URL
+        - ik_custom_dict=$ELASTICSEARCH_IK_CUSTOM_DICT
+        - ik_custom_stopword_dict=$ELASTICSEARCH_IK_CUSTOM_STOPWORD_DICT
+    image: elasticsearch_ik_pinyin:$ELASTICSEARCH_VERSION
+    container_name: elasticsearch
+    restart: always
+    volumes:
+      - type: bind
+        source: ./elasticsearch/node1/data
+        target: /usr/share/elasticsearch/data
+    environment:
+      - node.name=es01
+      - discovery.seed_hosts=es02,es03
+      - cluster.initial_master_nodes=es01,es02,es03
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
+    extra_hosts:
+      test.dict.com: 192.168.111.129
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    ports:
+      - 9200:9200
+    networks:
+      - default
+  es02:
+    build:
+      context: ./elasticsearch/Dockerfile
+      args:
+        - elasticsearch_version=$ELASTICSEARCH_VERSION
+        - ik_plugin_url=$ELASTICSEARCH_IK_URL
+        - pingyin_plugin_url=$ELASTICSEARCH_PINGYIN_URL
+        - ik_custom_dict=$ELASTICSEARCH_IK_CUSTOM_DICT
+        - ik_custom_stopword_dict=$ELASTICSEARCH_IK_CUSTOM_STOPWORD_DICT
+    image: elasticsearch_ik_pinyin:$ELASTICSEARCH_VERSION
+    container_name: es02
+    restart: always
+    volumes:
+      - type: bind
+        source: ./elasticsearch/node2/data
+        target: /usr/share/elasticsearch/data
+    environment:
+      - node.name=es02
+      - discovery.seed_hosts=es02,es03
+      - cluster.initial_master_nodes=es01,es02,es03
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
+    extra_hosts:
+      test.dict.com: 192.168.111.129
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    networks:
+      - default
+  es03:
+    build:
+      context: ./elasticsearch/Dockerfile
+      args:
+        - elasticsearch_version=$ELASTICSEARCH_VERSION
+        - ik_plugin_url=$ELASTICSEARCH_IK_URL
+        - pingyin_plugin_url=$ELASTICSEARCH_PINGYIN_URL
+        - ik_custom_dict=$ELASTICSEARCH_IK_CUSTOM_DICT
+        - ik_custom_stopword_dict=$ELASTICSEARCH_IK_CUSTOM_STOPWORD_DICT
+    image: elasticsearch_ik_pinyin:$ELASTICSEARCH_VERSION
+    container_name: es03
+    restart: always
+    volumes:
+      - type: bind
+        source: ./elasticsearch/node3/data
+        target: /usr/share/elasticsearch/data
+    environment:
+      - node.name=es03
+      - discovery.seed_hosts=es02,es03
+      - cluster.initial_master_nodes=es01,es02,es03
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
+    extra_hosts:
+      test.dict.com: 192.168.111.129
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    networks:
+      - default
