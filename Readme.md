@@ -14,6 +14,7 @@
 
 * Docker CE Centos安装官方文档： https://docs.docker.com/install/linux/docker-ce/centos/
 * Docker Compose安装官方文档： https://docs.docker.com/compose/install/
+* Docker 国内镜像源： https://yeasy.gitbooks.io/docker_practice/content/install/mirror.html
 
 ### 部署ELK
 * 建议创建uid为1000的用户
