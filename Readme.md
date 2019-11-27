@@ -1,5 +1,5 @@
 ### 介绍
-##### 此为开发测试用的单机Elasticsearch+Kibana+Logstash（以下简称ELK）环境版本，拥有3个es节点，Kibana平台及logstash测试（导入了一份电影资料），其中Elasticsearch已预先导入了ik中文分词及拼音分词扩展。
+##### 此为开发测试用的单机Elasticsearch+Kibana+Logstash（以下简称ELK）环境版本，拥有3个es节点，Kibana平台,其中Elasticsearch已预先导入了ik中文分词及拼音分词扩展。
 
 #### 警告：不可将此版本直接部署至生产环境
 
